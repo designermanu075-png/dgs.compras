@@ -1,69 +1,75 @@
-const URL_CONTADOR_GLOBAL = "SUA_URL_DA_PLANILHA_AQUI";
-const WEBHOOK_COMPRA = "https://discord.com/api/webhooks/1474412092881637378/goEnWt4XbXA3Pe7RGkIzeZhiEawR1y1Ps-hyCpaqFJBd7wGrFen_uE5gKm89TWTMSNVF";
-const DRAGONS_BLUE = 22185; 
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1474412092881637378/goEnWt4XbXA3Pe7RGkIzeZhiEawR1y1Ps-hyCpaqFJBd7wGrFen_uE5gKm89TWTMSNVF";
+const DRAGONS_BLUE_DECIMAL = 22185; // Equivalente a #0056a9
 
-// CONFIGURAÇÃO DE COMPRA
-document.getElementById('confirmarCompra').addEventListener('click', async () => {
-    const btn = document.getElementById('confirmarCompra');
+document.getElementById('btnRegistrar').addEventListener('click', async () => {
+    const btn = document.getElementById('btnRegistrar');
+    
+    // Coleta de Dados
     const dados = {
-        data: document.getElementById('dataCompra').value || "Não informada",
+        data: document.getElementById('data').value || "Não informada",
         fornecedor: document.getElementById('fornecedor').value,
-        produto: document.getElementById('produtoComprado').value,
-        quantidade: document.getElementById('qtdCompra').value,
-        valor: document.getElementById('valorTotalCompra').value,
-        pagamento: document.getElementById('formaPagamento').value,
-        comprador: document.getElementById('quemComprou').value,
-        obs: document.getElementById('obsCompra').value || "Nenhuma"
+        produto: document.getElementById('produto').value,
+        quantidade: document.getElementById('quantidade').value,
+        valor: document.getElementById('valor').value,
+        pagamento: document.getElementById('pagamento').value,
+        responsavel: document.getElementById('responsavel').value,
+        obs: document.getElementById('obs').value || "Nenhuma observação."
     };
 
-    if (!dados.fornecedor || !dados.valor) return alert("Preencha o fornecedor e o valor!");
+    // Validação Simples
+    if (!dados.fornecedor || !dados.produto || !dados.valor) {
+        return alert("Por favor, preencha os campos principais (Fornecedor, Produto e Valor).");
+    }
 
-    btn.disabled = true; btn.innerText = "⏳ Enviando...";
+    btn.disabled = true;
+    btn.innerText = "⏳ Enviando para o Discord...";
 
-    const embedCompra = {
-        title: "📥 NOVO REGISTRO DE COMPRA",
-        color: DRAGONS_BLUE,
+    // Estrutura da Embed
+    const embed = {
+        title: "📥 NOVO REGISTRO DE COMPRA - DRAGONS",
+        color: DRAGONS_BLUE_DECIMAL,
         fields: [
             { name: "📅 Data", value: dados.data, inline: true },
-            { name: "👤 Fornecedor", value: dados.fornecedor, inline: true },
-            { name: "🔫 Produto", value: `${dados.quantidade}x ${dados.produto}`, inline: true },
+            { name: "🤝 Compramos de quem?", value: dados.fornecedor, inline: true },
+            { name: "📦 Produto", value: dados.produto, inline: true },
+            { name: "🔢 Quantidade", value: dados.quantidade, inline: true },
             { name: "💰 Valor Total", value: `R$ ${dados.valor}`, inline: true },
-            { name: "💳 Pagamento", value: dados.pagamento, inline: true },
-            { name: "🛠️ Comprador", value: dados.comprador, inline: true },
+            { name: "💳 Forma de Pagamento", value: dados.pagamento, inline: true },
+            { name: "👤 Quem comprou?", value: dados.responsavel, inline: true },
             { name: "📝 Observações", value: dados.obs, inline: false }
         ],
-        footer: { text: "Dragons | Gestão de Insumos" },
+        footer: { text: "Dragons | Sistema de Gestão Interna" },
         timestamp: new Date()
     };
 
     try {
-        await fetch(WEBHOOK_COMPRA, {
+        const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ embeds: [embedCompra] })
+            body: JSON.stringify({ embeds: [embed] })
         });
-        alert("✅ Compra registrada no Discord!");
-        location.reload();
+
+        if (response.ok) {
+            alert("✅ Compra registrada com sucesso!");
+            limparCampos();
+        } else {
+            throw new Error();
+        }
     } catch (e) {
-        alert("Erro ao enviar registro.");
+        alert("❌ Erro ao enviar para o Discord. Verifique a conexão.");
+    } finally {
         btn.disabled = false;
+        btn.innerText = "Finalizar Registro de Compra";
     }
 });
 
-// LOGICA DE ALTERNAR FORMULÁRIOS
-document.getElementById('btnAbrirVenda').addEventListener('click', () => {
-    document.querySelectorAll('.form-card').forEach(f => f.classList.add('hidden'));
-    document.getElementById('formEncomenda').classList.remove('hidden');
+// Botão de Limpar
+document.getElementById('btnLimpar').addEventListener('click', () => {
+    if (confirm("Deseja realmente limpar todos os campos?")) {
+        limparCampos();
+    }
 });
 
-document.getElementById('btnAbrirCompra').addEventListener('click', () => {
-    document.querySelectorAll('.form-card').forEach(f => f.classList.add('hidden'));
-    document.getElementById('formCompra').classList.remove('hidden');
-});
-
-document.getElementById('btnToggleUpdate').addEventListener('click', () => {
-    document.querySelectorAll('.form-card').forEach(f => f.classList.add('hidden'));
-    document.getElementById('formUpdate').classList.remove('hidden');
-});
-
-// (Mantenha aqui suas funções renderTabela() e calcular() do sistema anterior)
+function limparCampos() {
+    document.querySelectorAll('input, textarea, select').forEach(el => el.value = "");
+}

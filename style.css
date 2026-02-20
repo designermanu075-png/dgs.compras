@@ -1,25 +1,106 @@
-textarea {
+:root {
+    --bg-body: #0f172a;
+    --bg-card: #1e293b;
+    --dragons-blue: #0056a9;
+    --danger: #ef4444;
+    --text: #f8fafc;
+    --border: #334155;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container { width: 100%; max-width: 800px; }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo { height: 70px; }
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--danger);
+    color: #f87171;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-danger:hover { background: var(--danger); color: white; }
+
+.card-compra {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+h2 { margin: 0; color: var(--dragons-blue); }
+.subtitle { color: #94a3b8; margin-bottom: 30px; }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.full-width { grid-column: span 2; }
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+}
+
+input, select, textarea {
+    width: 100%;
     background: #0f172a;
-    border: 1px solid #334155;
-    color: white;
+    border: 1px solid var(--border);
     padding: 12px;
     border-radius: 8px;
-    width: 100%;
+    color: white;
     box-sizing: border-box;
-    margin-bottom: 15px;
-    font-family: inherit;
-    resize: none;
+    font-size: 1rem;
 }
 
-.label-input {
-    display: block;
-    font-size: 0.8rem;
-    color: #94a3b8;
-    margin-bottom: 5px;
-    margin-left: 5px;
+textarea { resize: none; }
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--dragons-blue);
+    box-shadow: 0 0 0 2px rgba(0, 86, 169, 0.2);
 }
 
-#formCompra h3 {
-    color: #60a5fa;
-    margin-bottom: 20px;
+.btn-confirmar {
+    width: 100%;
+    background: var(--dragons-blue);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: 0.3s;
+}
+
+.btn-confirmar:hover {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
 }

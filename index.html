@@ -2,86 +2,71 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dragons | Sistema Interno</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard">
-        <div class="main-content">
-            <header class="header">
-                <img src="https://cdn.discordapp.com/attachments/1191888158795771934/1474404057664716956/NO_DINHEIRO_SUJO_30_1.png" alt="Dragons Logo" class="logo-header">
-                <button id="limparOrcamento" class="btn-limpar">🗑️ Limpar Tudo</button>
-            </header>
+    <div class="container">
+        <header class="header">
+            <img src="https://cdn.discordapp.com/attachments/1191888158795771934/1474404057664716956/NO_DINHEIRO_SUJO_30_1.png?ex=6999b948&is=699867c8&hm=d7fae3fe0359faebe8fa16f27559eaf2e76ed008816cfd0c8acace657a3b85c8&" alt="Dragons Logo" class="logo">
+            <button id="btnLimpar" class="btn-danger">🗑️ Limpar Formulário</button>
+        </header>
 
-            <section class="card-table">
-                <table>
-                    <thead>
-                        <tr><th>Produto</th><th>Preço Pack</th><th>Qtd. Munições</th><th>Total Packs</th><th>Subtotal</th></tr>
-                    </thead>
-                    <tbody id="linhas"></tbody>
-                </table>
-            </section>
-
-            <div class="actions-container">
-                <div class="tabs">
-                    <button class="tab active" data-desconto="0">Sem Desconto</button>
-                    <button class="tab" data-desconto="20">20% OFF</button>
-                    <button class="tab" data-desconto="30">30% OFF</button>
+        <main class="card-compra">
+            <h2>📥 Registro de Compra</h2>
+            <p class="subtitle">Documente as aquisições feitas com outras famílias</p>
+            
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Data da Compra:</label>
+                    <input type="date" id="data">
                 </div>
-                <div id="info-parceria" class="info-parceria"></div>
-            </div>
-        </div>
 
-        <aside class="sidebar">
-            <div class="summary-card">
-                <h3>Resumo de Venda</h3>
-                <div class="stat-row"><span>Total Final:</span> <strong id="totalComDesconto">R$ 0,00</strong></div>
-                <div class="commission-box">
-                    <span>Sua Comissão (10%):</span> <strong id="comissaoValor">R$ 0,00</strong>
+                <div class="input-group">
+                    <label>Compramos de quem?</label>
+                    <input type="text" id="fornecedor" placeholder="Ex: Família Medellin">
                 </div>
-                <button id="btnAbrirVenda" class="btn-register-trigger">📦 Registrar Venda</button>
-                <button id="btnAbrirCompra" class="btn-secondary-outline" style="border-color: #3b82f6; color: #60a5fa;">📥 Registrar Compra</button>
-                <button id="btnToggleUpdate" class="btn-secondary-outline">🔄 Atualizar Pedido</button>
+
+                <div class="input-group">
+                    <label>Produto:</label>
+                    <input type="text" id="produto" placeholder="Ex: Pólvora / Cartuchos">
+                </div>
+
+                <div class="input-group">
+                    <label>Quantidade:</label>
+                    <input type="number" id="quantidade" placeholder="Ex: 5000">
+                </div>
+
+                <div class="input-group">
+                    <label>Valor Total:</label>
+                    <input type="text" id="valor" placeholder="Ex: 1.500.000">
+                </div>
+
+                <div class="input-group">
+                    <label>Forma de Pagamento:</label>
+                    <select id="pagamento">
+                        <option value="" disabled selected>Selecione...</option>
+                        <option>Dinheiro Sujo</option>
+                        <option>Dinheiro Limpo</option>
+                        <option>Pix / Transferência</option>
+                        <option>Troca de Insumos</option>
+                    </select>
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Quem comprou?</label>
+                    <input type="text" id="responsavel" placeholder="Seu nome ou ID">
+                </div>
+
+                <div class="input-group full-width">
+                    <label>Observações:</label>
+                    <textarea id="obs" rows="3" placeholder="Detalhes adicionais da negociação..."></textarea>
+                </div>
             </div>
 
-            <div id="formCompra" class="form-card hidden" style="border-top: 3px solid #0056a9;">
-                <h3>📥 Registro de Compra</h3>
-                <label class="label-input">Data da Compra:</label>
-                <input type="date" id="dataCompra">
-                <input type="text" id="fornecedor" placeholder="Compramos de quem?">
-                <input type="text" id="produtoComprado" placeholder="Produto (Ex: Pólvora)">
-                <input type="number" id="qtdCompra" placeholder="Quantidade">
-                <input type="text" id="valorTotalCompra" placeholder="Valor Total (Ex: 500.000)">
-                <select id="formaPagamento">
-                    <option value="" disabled selected>Forma de Pagamento</option>
-                    <option>Dinheiro Sujo</option>
-                    <option>Dinheiro Limpo</option>
-                    <option>Pix / Transferência</option>
-                </select>
-                <input type="text" id="quemComprou" placeholder="Quem comprou?">
-                <textarea id="obsCompra" placeholder="Observações?" rows="2"></textarea>
-                <button id="confirmarCompra" class="btn-primary" style="background: #0056a9;">Finalizar Compra</button>
-            </div>
-
-            <div id="formEncomenda" class="form-card hidden">
-                <h3>Registro de Venda</h3>
-                <input type="text" id="nomeComprador" placeholder="Comprador / FAC">
-                <input type="text" id="membro" placeholder="Membro Responsável">
-                <select id="situacao">
-                    <option value="Em andamento">🔄 Em andamento</option>
-                    <option value="Entregues">✅ Entregues</option>
-                </select>
-                <div class="material-info" id="materialCalc">🧨 Pólvoras: 0 | 🐚 Cartuchos: 0</div>
-                <button id="confirmarRegistro" class="btn-primary">Finalizar e Enviar</button>
-            </div>
-
-            <div id="formUpdate" class="form-card hidden">
-                <h3>🔄 Atualizar Status</h3>
-                <input type="text" id="updateNumPedido" placeholder="Número do Pedido">
-                <select id="updateSituacao"><option value="Entregues">✅ Entregues</option></select>
-                <button id="btnUpdateStatus" class="btn-primary">Confirmar Atualização</button>
-            </div>
-        </aside>
+            <button id="btnRegistrar" class="btn-confirmar">Finalizar Registro de Compra</button>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
